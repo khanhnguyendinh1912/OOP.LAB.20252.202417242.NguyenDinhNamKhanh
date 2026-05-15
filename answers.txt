@@ -1,0 +1,26 @@
+Q10: If the passing object is not an instance of Media, what happens?
+-  If the passed object is not an instance of Media, equals(Object obj) returns false (no cast occurs because the class/type check fails).
+Q11: 
+- The list variable type is Media, but each element’s runtime type is CD / DigitalVideoDisc / Book.
+- When you call m.toString(), Java uses dynamic dispatch:
+- If the subclass overrides toString(), that subclass version runs (e.g., DigitalVideoDisc)
+- If it doesn’t override toString(), you fall back to Media/Object’s default toString() (e.g., CD, Book in your current code)
+Q12:
+* What class should implement the Comparable interface?
+    - Implement Comparable in the item class you sort—i.e., in Media (or more precisely, in each concrete media type like DVD/CD/Book/DigitalVideoDisc) depending on your design.
+* How to implement compareTo() to reflect the ordering we want?
+    - A compareTo() supports one single natural ordering. So implement it to match one rule, e.g.:
+        public int compareTo(Media other) {
+      int cmpTitle = this.getTitle().compareToIgnoreCase(other.getTitle());
+      if (cmpTitle != 0) return cmpTitle;
+      // same title: higher cost first
+      return Float.compare(other.getCost(), this.getCost());
+  }
+* Can we have two ordering rules using only Comparable?
+    - No. With Comparable, each class has exactly one compareTo() implementation, so you get only one natural ordering.
+* If DVDs need a different rule (title, then decreasing length, then cost), how to modify the code?
+    - Since compareTo() can have only one ordering per class, you would implement the ordering in the DVD-specific class:
+
+        - Make DVD/DigitalVideoDisc implement Comparable with its own rule: title ASC, then length DESC, then cost ASC/whatever your spec says.
+            - Use MediaComparatorByTitleCost / MediaComparatorByCostTitle for general media
+            - Use a separate Comparator for DVDs when you detect DVD items (or sort with a comparator that handles instanceof DVD).
