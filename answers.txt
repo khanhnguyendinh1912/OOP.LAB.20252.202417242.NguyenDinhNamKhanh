@@ -1,0 +1,57 @@
+1. Top-Level Containers
+
+In AWT, the main top-level containers are Frame, Dialog, and Window. These components are considered heavyweight components because they rely on native operating system resources. As a result, their behavior and visual style are strongly affected by the platform on which the program is running.
+
+Swing provides similar top-level containers, such as JFrame, JDialog, and JWindow. These are more advanced versions of the AWT containers. Although Swing top-level containers still depend on the operating system to create the main window, Swing introduces a more structured design. Components are usually added to the contentPane rather than directly to the frame. Swing also uses structures such as JRootPane, which makes the user interface more flexible and easier to manage.
+
+2. Component Class Names
+
+AWT components have simple class names such as Button, Label, and TextField. These components are heavyweight because they depend on native GUI elements provided by the operating system.
+
+Swing components usually have the prefix J, for example JButton, JLabel, and JTextField. Most Swing components are lightweight, meaning they are drawn by Java itself instead of depending heavily on native operating system components. Because of this, Swing allows better customization and provides a larger set of GUI components compared to AWT.
+
+3. Event Handling
+
+Both AWT and Swing use the delegation event model. In this model, events are handled through listener interfaces such as ActionListener, MouseListener, and other event listeners.
+
+However, Swing improves event handling by using the Event Dispatch Thread, also known as the EDT. The EDT is responsible for processing GUI events and updating Swing components. Since Swing is not thread-safe, GUI updates should be performed on this thread to avoid unexpected behavior. Swing also provides the Action interface, which helps developers manage common user actions more cleanly and reuse them across different components.
+
+4. Appearance / Look and Feel
+
+AWT uses the native look and feel of the operating system. This means that an AWT application may look different on Windows, macOS, or Linux because its components are rendered by the host system.
+
+Swing supports Pluggable Look and Feel, also called PLAF. This allows developers to change the appearance of the whole application without changing the core program logic. Swing includes several look and feel options, such as Metal, Nimbus, and system-based styles. Because of this, Swing applications can either maintain a consistent appearance across platforms or imitate the native style of the operating system.
+
+5. Conclusion
+
+AWT is suitable for simple Java desktop applications that only require basic graphical components and native operating system appearance. However, it has fewer components and limited customization options.
+
+Swing is more powerful and flexible. It provides a richer set of components, better customization, lightweight rendering, pluggable look and feel, and a more structured approach to GUI programming. For larger and more complex Java desktop applications, Swing is generally the better choice.
+
+Q2. What happens when callers are not updated to catch checked exceptions thrown by the play() method?
+
+If the play() method is declared to throw a checked exception, such as PlayerException, every method that calls play() must handle that exception properly.
+
+There are two valid ways to deal with it. The caller can place the method call inside a try-catch block, or it can declare the exception again using the throws keyword.
+
+If the caller is not updated in either of these ways, the Java compiler will produce a compilation error. A typical error message would be similar to:
+
+unreported exception PlayerException; must be caught or declared to be thrown
+
+Therefore, the program cannot be compiled or executed until the checked exception is properly handled or declared.
+
+Q3. Exception hierarchy tree in the AIMS project
+
+The custom exception hierarchy in the AIMS project can be represented as follows:
+
+java.lang.Exception
+│
+├── hust.soict.dsai.aims.exception.PlayerException
+│
+└── hust.soict.dsai.aims.exception.LimitExceededException
+
+PlayerException is used when an error occurs while playing a media item, for example when the media length is invalid.
+
+LimitExceededException is used when the number of items in the cart exceeds the allowed limit.
+
+Both of these custom exceptions extend java.lang.Exception. Therefore, they are checked exceptions. This means that any method calling code that may throw these exceptions must either catch them using a try-catch block or declare them using the throws keyword.
